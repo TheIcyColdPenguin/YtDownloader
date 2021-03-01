@@ -1,44 +1,39 @@
+from os import rename
 import pytube as pt
-import moviepy.editor as mp
-from os import remove
 from re import compile
 
-v_re = compile('www\\.youtube\\.com\\/watch\\?v=[_a-zA-Z0-9-]+')
-p_re = compile('www\\.youtube\\.com\\/playlist\\?list=[_a-zA-Z0-9-]+')
+v_re = compile('(https:\/\/)?www\.youtube.com\/watch\?v=[a-zA-Z0-9-_]+')
+p_re = compile(
+    '(https:\/\/)?www\.youtube.com\/playlist\?list=[a-zA-Z0-9-_]+')
 link = input('Please provide a link : ')
-method = input('Is the above link a single video or a playlist? (s/p) : ')
+
 mode = input('Audio or Video? (a/v) : ')
 
-if method == 's':
+if v_re.match(link):
     yt = pt.YouTube(link)
-    yr = yt.streams.get_highest_resolution()
-    path = yr.download()
     if mode == 'v':
-        pass
+        yr = yt.streams.get_highest_resolution()
+        path = yr.download()
     elif mode == 'a':
-        video_file_to_convert = mp.VideoFileClip(path)
-        video_file_to_convert.audio.write_audiofile(path[:-4] + '.mp3')
-        video_file_to_convert.close()
-        remove(path)
+        yr = yt.streams.get_audio_only()
+        path = yr.download()
+        rename(path, path[:-4] + ".mp3")
     else:
         print('Invalid stuff ngl')
 
-elif method == 'p':
+elif p_re.match(link):
     pl = pt.Playlist(link)
     for vid in pl.video_urls:
         yt = pt.YouTube(vid)
-        yr = yt.streams.get_highest_resolution()
-        path = yr.download()
         if mode == 'v':
-            pass
+            yr = yt.streams.get_highest_resolution()
+            path = yr.download()
+        elif mode == 'a':
+            yr = yt.streams.get_audio_only()
+            path = yr.download()
+            rename(path, path[:-4] + ".mp3")
         else:
-            if mode == 'a':
-                video_file_to_convert = mp.VideoFileClip(path)
-                video_file_to_convert.audio.write_audiofile(path[:-4] + '.mp3')
-                video_file_to_convert.close()
-                remove(path)
-            else:
-                print('Invalid stuff ngl')
+            print('Invalid stuff ngl')
 
 else:
     print('Invalid stuff ngl')
