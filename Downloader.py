@@ -9,15 +9,23 @@ link = input('Please provide a link : ')
 
 mode = input('Audio or Video? (a/v) : ')
 
+
+def download_video(stream, audio):
+    path = stream.download()
+    if audio:
+        new_path = path[:-4] + ".mp3"
+        rename(path, new_path)
+        return new_path
+
+    return path
+
+
 if v_re.match(link):
     yt = pt.YouTube(link)
     if mode == 'v':
-        yr = yt.streams.get_highest_resolution()
-        path = yr.download()
+        download_video(yt.streams.get_highest_resolution(), False)
     elif mode == 'a':
-        yr = yt.streams.get_audio_only()
-        path = yr.download()
-        rename(path, path[:-4] + ".mp3")
+        download_video(yt.streams.get_audio_only(), True)
     else:
         print('Invalid stuff ngl')
 
@@ -26,12 +34,9 @@ elif p_re.match(link):
     for vid in pl.video_urls:
         yt = pt.YouTube(vid)
         if mode == 'v':
-            yr = yt.streams.get_highest_resolution()
-            path = yr.download()
+            download_video(yt.streams.get_highest_resolution(), False)
         elif mode == 'a':
-            yr = yt.streams.get_audio_only()
-            path = yr.download()
-            rename(path, path[:-4] + ".mp3")
+            download_video(yt.streams.get_audio_only(), True)
         else:
             print('Invalid stuff ngl')
 
