@@ -1,6 +1,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QMovie
 from Downloader import main as Download
+from QThreading import Worker
 
 
 class Ui_MainWindow:
@@ -63,10 +65,19 @@ class Ui_MainWindow:
         font.setPointSize(27)
         font.setBold(True)
         font.setWeight(75)
+
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(200, 355, 30, 30))
+        self.label_4.setText("")
+        self.loading = QMovie("Loading.gif")
+        self.label_4.setMovie(self.loading)
+        self.label_4.setScaledContents(True)
+        self.label_4.setObjectName("label_4")
+
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
 
-        self.pushButton.clicked.connect(self.download)
+        self.pushButton.clicked.connect(self.start_spin)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -83,12 +94,20 @@ class Ui_MainWindow:
             "MainWindow", "Video (With Audio)"))
         self.pushButton.setText(_translate("MainWindow", "Download"))
 
+    def start_spin(self):
+        self.label_4.setHidden(False)
+        self.loading.start()
+        self.threadpool = QtCore.QThreadPool()
+        worker = Worker(self.download)
+        self.threadpool.start(worker)
+
     def download(self):
         link = self.lineEdit.text()
         mode = "a" if self.radioButton.isChecked() else "v"
-        print(link, mode)
         Download(link, mode)
         self.lineEdit.setText("Done!")
+        self.loading.stop()
+        self.label_4.setHidden(True)
 
 
 app = QtWidgets.QApplication(sys.argv)
