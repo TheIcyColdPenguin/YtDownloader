@@ -7,7 +7,7 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 import os
 import music_tag
 
-from scripts import QThreading
+import QThreading
 
 
 class Ui_MainWindow:
