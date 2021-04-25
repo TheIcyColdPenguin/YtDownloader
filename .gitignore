@@ -3,3 +3,5 @@ YtEnv
 *.mp3
 __pycache__
 *.pyc
+build
+dist
