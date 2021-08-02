@@ -9,8 +9,10 @@ import music_tag
 
 import QThreading
 
+SELECT_QUALITY_PROMPT_STRING = "Click to select quality"
 
-class Ui_MainWindow:
+
+class UiMainWindow:
     @staticmethod
     def make_style(obj_name, additional_props=""):
         styles = f"""{obj_name} {{
@@ -35,12 +37,12 @@ class Ui_MainWindow:
 """
         return styles
 
-    def set_window(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(939, 534)
+    def set_window(self, main_window):
+        main_window.setObjectName("MainWindow")
+        main_window.resize(939, 534)
 
-    def set_widget(self, MainWindow):
-        self.widget = QtWidgets.QWidget(MainWindow)
+    def set_widget(self, main_window):
+        self.widget = QtWidgets.QWidget(main_window)
         self.widget.setObjectName("MainWidget")
 
     def set_label(self, background_fp):
@@ -73,7 +75,7 @@ class Ui_MainWindow:
     padding-left: 0px;
     padding-right: 0px;
 }
-        
+
 QProgressBar::chunk {
     background-color: red;
 }'''))
@@ -90,7 +92,7 @@ QProgressBar::chunk {
     padding-left: 0px;
     padding-right: 0px;
 }
-        
+
 QProgressBar::chunk {
     background-color: red;
 }'''))
@@ -111,117 +113,118 @@ QProgressBar::chunk {
         self.message_label.setHidden(True)
 
     def set_url_edit(self):
-        self.url_lineEdit = QtWidgets.QLineEdit(self.widget)
-        self.url_lineEdit.setGeometry(QtCore.QRect(190, 130, 500, 60))
+        self.url_line_edit = QtWidgets.QLineEdit(self.widget)
+        self.url_line_edit.setGeometry(QtCore.QRect(190, 130, 500, 60))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.url_lineEdit.setFont(font)
-        self.url_lineEdit.setStyleSheet(self.make_style("QLineEdit"))
-        self.url_lineEdit.setObjectName("URLLineEdit")
+        self.url_line_edit.setFont(font)
+        self.url_line_edit.setStyleSheet(self.make_style("QLineEdit"))
+        self.url_line_edit.setObjectName("URLLineEdit")
 
     def set_search_button(self, search_image_path):
-        self.search_pushButton = QtWidgets.QPushButton(self.widget)
-        self.search_pushButton.setGeometry(QtCore.QRect(700, 130, 60, 60))
+        self.search_push_button = QtWidgets.QPushButton(self.widget)
+        self.search_push_button.setGeometry(QtCore.QRect(700, 130, 60, 60))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.search_pushButton.setFont(font)
-        self.search_pushButton.setStyleSheet(self.make_style("QPushButton"))
+        self.search_push_button.setFont(font)
+        self.search_push_button.setStyleSheet(self.make_style("QPushButton"))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(search_image_path),
                        QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.search_pushButton.setIcon(icon)
-        self.search_pushButton.setIconSize(QtCore.QSize(25, 25))
-        self.search_pushButton.setObjectName("SearchPushButton")
-        self.search_pushButton.clicked.connect(self.check_url)
+        self.search_push_button.setIcon(icon)
+        self.search_push_button.setIconSize(QtCore.QSize(25, 25))
+        self.search_push_button.setObjectName("SearchPushButton")
+        self.search_push_button.clicked.connect(self.check_url)
 
     def set_folder_edit(self):
-        self.folder_lineEdit = QtWidgets.QLineEdit(self.widget)
-        self.folder_lineEdit.setGeometry(QtCore.QRect(190, 210, 500, 60))
+        self.folder_line_edit = QtWidgets.QLineEdit(self.widget)
+        self.folder_line_edit.setGeometry(QtCore.QRect(190, 210, 500, 60))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.folder_lineEdit.setFont(font)
-        self.folder_lineEdit.setStyleSheet(self.make_style("QLineEdit"))
-        self.folder_lineEdit.setObjectName("FolderLineEdit")
-        self.folder_lineEdit.setHidden(True)
+        self.folder_line_edit.setFont(font)
+        self.folder_line_edit.setStyleSheet(self.make_style("QLineEdit"))
+        self.folder_line_edit.setObjectName("FolderLineEdit")
+        self.folder_line_edit.setHidden(True)
 
     def set_folder_button(self, folder_icon_path):
-        self.select_folder_pushButton = QtWidgets.QPushButton(self.widget)
-        self.select_folder_pushButton.setGeometry(
+        self.select_folder_push_button = QtWidgets.QPushButton(self.widget)
+        self.select_folder_push_button.setGeometry(
             QtCore.QRect(700, 210, 60, 60))
-        self.select_folder_pushButton.setStyleSheet(
+        self.select_folder_push_button.setStyleSheet(
             self.make_style("QPushButton"))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(folder_icon_path),
                        QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.select_folder_pushButton.setIcon(icon)
-        self.select_folder_pushButton.setIconSize(QtCore.QSize(35, 35))
-        self.select_folder_pushButton.setObjectName("FolderSelectBUtton")
-        self.select_folder_pushButton.setHidden(True)
-        self.select_folder_pushButton.clicked.connect(self.select_folder)
+        self.select_folder_push_button.setIcon(icon)
+        self.select_folder_push_button.setIconSize(QtCore.QSize(35, 35))
+        self.select_folder_push_button.setObjectName("FolderSelectBUtton")
+        self.select_folder_push_button.setHidden(True)
+        self.select_folder_push_button.clicked.connect(self.select_folder)
 
     def set_queue_button(self):
-        self.queue_pushButton = QtWidgets.QPushButton(self.widget)
-        self.queue_pushButton.setGeometry(QtCore.QRect(779, 40, 111, 60))
+        self.queue_push_button = QtWidgets.QPushButton(self.widget)
+        self.queue_push_button.setGeometry(QtCore.QRect(779, 40, 111, 60))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(False)
         font.setWeight(50)
-        self.queue_pushButton.setFont(font)
-        self.queue_pushButton.setStyleSheet(self.make_style("QPushButton"))
-        self.queue_pushButton.setObjectName("QueueButton")
+        self.queue_push_button.setFont(font)
+        self.queue_push_button.setStyleSheet(self.make_style("QPushButton"))
+        self.queue_push_button.setObjectName("QueueButton")
 
     def set_combo_box(self):
-        self.quality_comboBox = QtWidgets.QComboBox(self.widget)
-        self.quality_comboBox.setGeometry(QtCore.QRect(190, 290, 570, 60))
+        self.quality_combo_box = QtWidgets.QComboBox(self.widget)
+        self.quality_combo_box.setGeometry(QtCore.QRect(190, 290, 570, 60))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.quality_comboBox.setFont(font)
-        self.quality_comboBox.setStyleSheet(self.make_style("QComboBox", '''QComboBox::drop-down {
+        self.quality_combo_box.setFont(font)
+        self.quality_combo_box.setStyleSheet(self.make_style("QComboBox", '''QComboBox::drop-down {
   image: #00000000;
 }'''))
-        self.quality_comboBox.setObjectName("QualityButton")
-        self.quality_comboBox.addItem("Click to select quality")
-        self.quality_comboBox.setHidden(True)
+        self.quality_combo_box.setObjectName("QualityButton")
+        self.quality_combo_box.addItem(SELECT_QUALITY_PROMPT_STRING)
+        self.quality_combo_box.setHidden(True)
 
     def set_start_button(self):
-        self.start_pushButton = QtWidgets.QPushButton(self.widget)
-        self.start_pushButton.setGeometry(QtCore.QRect(380, 390, 230, 90))
+        self.start_push_button = QtWidgets.QPushButton(self.widget)
+        self.start_push_button.setGeometry(QtCore.QRect(380, 390, 230, 90))
         font = QtGui.QFont()
         font.setPointSize(20)
         font.setBold(False)
         font.setWeight(50)
-        self.start_pushButton.setFont(font)
-        self.start_pushButton.setStyleSheet(self.make_style("QPushButton"))
-        self.start_pushButton.setObjectName("StartButton")
-        self.start_pushButton.setHidden(True)
-        self.start_pushButton.clicked.connect(self.click_btn)
+        self.start_push_button.setFont(font)
+        self.start_push_button.setStyleSheet(self.make_style("QPushButton"))
+        self.start_push_button.setObjectName("StartButton")
+        self.start_push_button.setHidden(True)
+        self.start_push_button.clicked.connect(self.click_btn)
 
     @staticmethod
     def is_v(url):
-        return re.match(r"^(https://)?www\.youtube\.com/watch\?v=[\w\-]+$", url) or re.match(r"^(https://)?youtu\.be/[\w\-]+$", url)
+        return re.match(r"^(https://)?www\.youtube\.com/watch\?v=[\w\-]+$", url) \
+            or re.match(r"^(https://)?youtu\.be/[\w\-]+$", url)
 
     @staticmethod
     def is_p(url):
         return re.match(r"^https://www\.youtube\.com/playlist\?list=[\w_\-]+$", url)
 
     def check_url(self):
-        text = self.url_lineEdit.text()
+        text = self.url_line_edit.text()
         is_v = self.is_v(text)
         is_p = self.is_p(text)
 
         if not is_v and not is_p:
-            self.url_lineEdit.setText("Please enter a valid url")
+            self.url_line_edit.setText("Please enter a valid url")
             return
 
-        self.folder_lineEdit.setHidden(False)
-        self.select_folder_pushButton.setHidden(False)
-        self.quality_comboBox.setHidden(False)
-        self.start_pushButton.setHidden(False)
+        self.folder_line_edit.setHidden(False)
+        self.select_folder_push_button.setHidden(False)
+        self.quality_combo_box.setHidden(False)
+        self.start_push_button.setHidden(False)
 
         video = pt.YouTube(text) if is_v else pt.YouTube(
             pt.Playlist(text).video_urls[0])
-        self.quality_comboBox.clear()
-        self.quality_comboBox.addItem("Click to select quality")
+        self.quality_combo_box.clear()
+        self.quality_combo_box.addItem(SELECT_QUALITY_PROMPT_STRING)
         options = []
         for stream in video.streams:
             vora, ext = stream.mime_type.split("/")
@@ -232,11 +235,13 @@ QProgressBar::chunk {
                 options.append(
                     f"MP3 file at {stream.abr} bitrate") if ext.upper() == "WEBM" else None
 
-        self.quality_comboBox.addItems(sorted(list(set(options))))
+        self.quality_combo_box.addItems(sorted(list(set(options))))
 
     def select_folder(self):
-        self.folder_lineEdit.setText(str(
-            QtWidgets.QFileDialog.getExistingDirectory(self.select_folder_pushButton, "Select Directory")))
+        self.folder_line_edit.setText(str(
+            QtWidgets.QFileDialog.getExistingDirectory(
+                self.select_folder_push_button, "Select Directory"
+            )))
 
     @staticmethod
     def download_video(vid, ext, qual, target_dir):
@@ -270,7 +275,11 @@ QProgressBar::chunk {
 
         metadata = vid.metadata.metadata
         f = music_tag.load_file(new_path)
-        f['artist'] = metadata[0]['Artist'] if len(metadata) > 0 else vid.author
+        f['artist'] = (
+            metadata[0]['Artist']
+            if len(metadata) > 0
+            else vid.author
+        )
         f['comment'] = vid.description
         f['compilation'] = False
         f['composer'] = metadata[0]['Artist'] if len(
@@ -297,9 +306,9 @@ QProgressBar::chunk {
         self.threadpool.start(worker)
 
     def download(self):
-        url = self.url_lineEdit.text()
-        target_dir = self.folder_lineEdit.text()
-        quality = str(self.quality_comboBox.currentText())
+        url = self.url_line_edit.text()
+        target_dir = self.folder_line_edit.text()
+        quality = str(self.quality_combo_box.currentText())
         is_v, is_p = self.is_v(url), self.is_p(url)
 
         if is_p:
@@ -308,26 +317,26 @@ QProgressBar::chunk {
         elif is_v:
             iter_things = [url]
         else:
-            self.url_lineEdit.setText("Please enter a valid url")
+            self.url_line_edit.setText("Please enter a valid url")
             return
 
         if not target_dir:
-            self.folder_lineEdit.setText("Please choose a directory")
+            self.folder_line_edit.setText("Please choose a directory")
             return
 
-        if quality == "Click to select quality":
+        if quality == SELECT_QUALITY_PROMPT_STRING:
             return
 
         self.title_label.setText("")
         self.title_label.setText("Downloading..")
         self.message_label.setHidden(False)
-        self.quality_comboBox.setHidden(True)
-        self.folder_lineEdit.setHidden(True)
-        self.queue_pushButton.setHidden(True)
-        self.select_folder_pushButton.setHidden(True)
-        self.url_lineEdit.setHidden(True)
-        self.search_pushButton.setHidden(True)
-        self.start_pushButton.setHidden(True)
+        self.quality_combo_box.setHidden(True)
+        self.folder_line_edit.setHidden(True)
+        self.queue_push_button.setHidden(True)
+        self.select_folder_push_button.setHidden(True)
+        self.url_line_edit.setHidden(True)
+        self.search_push_button.setHidden(True)
+        self.start_push_button.setHidden(True)
         n = len(iter_things)
 
         for ind, text in enumerate(iter_things):
@@ -375,14 +384,14 @@ QProgressBar::chunk {
         self.title_label.setText("YouTube Downloader")
         self.message_label.setText("")
         self.message_label.setHidden(True)
-        self.queue_pushButton.setHidden(False)
-        self.url_lineEdit.setHidden(False)
-        self.search_pushButton.setHidden(False)
+        self.queue_push_button.setHidden(False)
+        self.url_line_edit.setHidden(False)
+        self.search_push_button.setHidden(False)
 
-    def setupUi(self, MainWindow):
-        MainWindow.setFixedSize(939, 534)
-        self.set_window(MainWindow)
-        self.set_widget(MainWindow)
+    def setup_ui(self, main_window):
+        main_window.setFixedSize(939, 534)
+        self.set_window(main_window)
+        self.set_widget(main_window)
         self.set_label("./assets/bg.jpg")
         self.set_video_progress_bar()
         self.set_audio_progress_bar()
@@ -395,27 +404,27 @@ QProgressBar::chunk {
         self.set_queue_button()
         self.set_combo_box()
         self.set_start_button()
-        MainWindow.setCentralWidget(self.widget)
+        main_window.setCentralWidget(self.widget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslate_ui(main_window)
+        QtCore.QMetaObject.connectSlotsByName(main_window)
 
-    def retranslateUi(self, MainWindow):
+    def retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        main_window.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.title_label.setText(_translate(
             "MainWindow", "Youtube Downloader"))
-        self.url_lineEdit.setPlaceholderText(_translate(
+        self.url_line_edit.setPlaceholderText(_translate(
             "MainWindow", "Type URL of the video/playlist"))
-        self.folder_lineEdit.setPlaceholderText(_translate(
+        self.folder_line_edit.setPlaceholderText(_translate(
             "MainWindow", "Enter destination folder path"))
-        self.queue_pushButton.setText(_translate("MainWindow", "QUEUE"))
-        self.start_pushButton.setText(_translate("MainWindow", "START"))
+        self.queue_push_button.setText(_translate("MainWindow", "QUEUE"))
+        self.start_push_button.setText(_translate("MainWindow", "START"))
 
 
 app = QtWidgets.QApplication(sys.argv)
-MainWindow = QtWidgets.QMainWindow()
-ui = Ui_MainWindow()
-ui.setupUi(MainWindow)
-MainWindow.show()
+main_window = QtWidgets.QMainWindow()
+ui = UiMainWindow()
+ui.setup_ui(main_window)
+main_window.show()
 sys.exit(app.exec_())
