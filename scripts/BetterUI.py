@@ -277,15 +277,17 @@ QProgressBar::chunk {
         f = music_tag.load_file(new_path)
         f['artist'] = (
             metadata[0]['Artist']
-            if len(metadata) > 0
+            if len(metadata) > 0 and metadata[0].get('Artist') is not None
             else vid.author
         )
         f['comment'] = vid.description
         f['compilation'] = False
-        f['composer'] = metadata[0]['Artist'] if len(
-            metadata) > 0 else vid.author
-        f['tracktitle'] = metadata[0]['Song'] if len(
-            metadata) > 0 else vid.title
+        f['composer'] = f['artist']
+        f['tracktitle'] = (
+            metadata[0]['Song']
+            if len(metadata) > 0 and metadata[0].get('Song') is not None
+            else vid.title
+        )
         f['year'] = vid.publish_date.year
         f.save()
 
