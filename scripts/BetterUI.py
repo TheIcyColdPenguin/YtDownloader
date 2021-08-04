@@ -200,12 +200,12 @@ QProgressBar::chunk {
 
     @staticmethod
     def is_v(url):
-        return re.match(r"^(https://)?(www\.)?youtube\.com/watch\?v=[\w\-]+$", url) \
+        return re.match(r"^(https://)?(www\.)?youtube\.com/watch\?([^&=]+?=[^&=]+?&)*v=[\w\-]+(&[^&=]+?=[^&=]+?)*$", url) \
             or re.match(r"^(https://)?youtu\.be/[\w\-]+$", url)
 
     @staticmethod
     def is_p(url):
-        return re.match(r"^https://(www\.)youtube\.com/playlist\?list=[\w_\-]+$", url)
+        return re.match(r"^(https://)?(www\.)?youtube\.com/playlist\?([^&=]+?=[^&=]+?&)*list=[\w\-]+(&[^&=]+?=[^&=]+?)*$", url)
 
     def check_url(self):
         text = self.url_line_edit.text()
